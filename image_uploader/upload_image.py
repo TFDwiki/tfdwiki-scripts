@@ -20,25 +20,18 @@ site = pywikibot.Site('en', Family())
 site.login('ImageBot')
 repo = site.data_repository()
 
-# TODO: I'm not sure if manual uploads or the UploadRobot is the better approach here
-#def upload_file(filename, description):
-#    file_page = pywikibot.FilePage(site, filename)
-#    file_page.text = description
-#    file_page.upload(filename, ignore_warnings=False)
-
-
-
-image_path = r'C:\workspace\tfd\Assets\test_image.png'
-target_filename = 'TestImage.png'
-description = 'Ignore Me'
+image_path = r'C:\workspace\tfd\Assets\test_image2.png'
+target_filename = 'test_image2.png'
+description = """== Licensing ==
+{{From NEXON}}
+"""
 
 # Create the UploadRobot object
 bot = UploadRobot([image_path],
                   description=description,
-                  useFilename=target_filename,
-                  keepFilename=True,
-                  verifyDescription=False,
-                  targetSite=site)
+                  use_filename=target_filename,
+                  keep_filename=True,
+                  verify_description=False)
 
 # Start the upload process
 bot.run()
