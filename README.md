@@ -16,9 +16,9 @@ As a layer of safety, we compartmentalize API edits from regular user edits. It'
 
 ## Pywikibot
 
-These scripts all use [Pywikibot](https://www.mediawiki.org/wiki/Manual:Pywikibot?useskin=vector), a Python library designed for Wikipedia, but usable by all WimiMedia sites. It can be a bit confusing to get set up and running, especially since much of the documentation is oriented around Wikipedia, instead of being site-agnostic.
+These scripts all use [Pywikibot](https://www.mediawiki.org/wiki/Manual:Pywikibot?useskin=vector), a Python library designed for Wikipedia, but usable by all MediaWiki sites. It can be a bit confusing to get set up and running, especially since much of the documentation is oriented around Wikipedia, instead of being site-agnostic.
 
-It is STRONGLY reccomended you use the [user-config.py](https://www.mediawiki.org/wiki/Manual:Pywikibot/user-config.py?useskin=vector) method of storing credentials, instead of embedding your username and password directly into your script. This will safeguard your password from being committed by accident.
+It is STRONGLY recommended you use the [user-config.py](https://www.mediawiki.org/wiki/Manual:Pywikibot/user-config.py?useskin=vector) method of storing credentials, instead of embedding your username and password directly into your script. This will safeguard your password from being committed by accident.
 
 See [Install Pywikibot](https://www.mediawiki.org/w/index.php?title=Manual:Pywikibot/Installation&useskin=vector#Configure_Pywikibot) for instructions on getting set up. Refer to [this file](https://github.com/TFDwiki/tfdwiki-scripts/blob/master/image_uploader/families/tfdwiki_family.py) for how to compose the Family class for our wiki.
 
