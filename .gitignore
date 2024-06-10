@@ -1,3 +1,7 @@
+# Pywikibot has an optional password file.
+# Make sure this never gets added!
+**/user-password.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
