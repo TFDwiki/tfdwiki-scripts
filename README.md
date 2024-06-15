@@ -9,10 +9,8 @@ Automation scripts can be a very powerful tool, but you can also do a lot of dam
 ### Join the Discord
 Write access to the MediaWiki API is disabled for regular users. In order to gain write access, please [join our Discord](https://discord.gg/8TuKeeDp4h) so we can get you set up and provide you with any help you may need.
 
-### Create both a regular and bot wiki accounts
-Please create two accounts on the wiki: Your main account, and a second account with the word "Bot" at the end.
-
-As a layer of safety, we compartmentalize API edits from regular user edits. It's easier to wipe a bot account's edits and not risk removing any content edits you as a person have made. This also protects your main account, should your bot account's password get committed to any repositories by accident.
+### Create your account and register a bot
+Please create your account on the wiki, then let us know on Discord to get developer access. Please do not directly use your account for automated edits, but instead, [register a bot](https://tfd.wiki/Special:BotPasswords) that has the minimum required permissions for the activity you want to do. 
 
 ## Pywikibot
 
