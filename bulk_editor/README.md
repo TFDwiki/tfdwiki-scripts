@@ -1,0 +1,5 @@
+As we change the data structures and templates of existing pages we’ll need to bulk edit the existing pages. This script is a template you can use to perform such an operation. Modify it for your purposes.
+
+Because these bulk edits are generally one-time operations, this repository is not seeking to keep a collection of every bulk edit script in the master branch. Keep your modification to this script on a different branch, and only bring in novel improvements to error handling, etc. to the master branch.
+
+This script was originally written to edit all pages in the Modules category, to replace a parameter in the template with a couple new ones. The script first looks at all pages in the category and figures out which ones need to be modified, then modifies the identified pages using specific criteria.
