@@ -44,7 +44,7 @@ def search_for_pages_to_edit():
             continue
 
         # One extra safety check to make sure the page has the text we want to modify
-        to_modify_text = "| exclusive_descendant"
+        to_modify_text = "| exclusive_descendant ="
         if to_modify_text not in page_text:
             print("This page is using the expected template, but doesn't have the expected line to replace. Investigate.")
             investigate_list.append(page_title)
@@ -69,4 +69,60 @@ def search_for_pages_to_edit():
     for page in needs_modifications_list:
         print(page)
 
-search_for_pages_to_edit()
+def modify_text(page_text):
+    completed_text = []
+    lines = page_text.split('\n')
+    for line in lines:
+        if "exclusive_descendant =" in line:
+            after_equals = line.split("exclusive_descendant =", 1)[1]
+            after_equals = after_equals.replace("Ultimate ", "") # Make sure we're not using the Ultimate versions of any Descendant
+            replacement_line1 = " | exclusive_base_descendant =" + after_equals
+            if after_equals == "" or after_equals == " ":
+                replacement_line2 = " | exclusive_to_ultimate_version = "
+            else:
+                replacement_line2 = " | exclusive_to_ultimate_version = false" # This will require manual editing after the bulk change is done.
+            completed_text.append(replacement_line1)
+            completed_text.append(replacement_line2)
+        else:
+            completed_text.append(line)
+    
+    for line in completed_text:
+        print(line)
+
+sample = """{{PreReleaseData}}
+{{Template:ModuleDefinitions|
+{{Template:ModuleUnique
+ | name = {{PAGENAME}}
+ | variantID = 1
+ | pic = 
+ | version_released = {{Launch}}
+ | rarity = Rare
+ | socket = Rutile
+ | class = Descendant
+ | max_enhancement_level = 
+ | capacity_cost_0 = 5
+ | exclusive_descendant = 
+ | exclusive_category = Time
+ | exclusive_weapon_type = 
+ | effect_0 = Skill Duration +5%, HP Heal +7.4%.
+ | effect_1 = 
+ | effect_2 = 
+ | effect_3 = 
+ | effect_4 = 
+ | effect_5 = 
+ | effect_6 = 
+ | effect_7 = 
+ | effect_8 = 
+ | effect_9 = 
+ | effect_10 = 
+}}
+}}
+{{Template:ModuleDetailsDefinitions
+|{{Template:ModuleUniqueDetails
+| variantID = 1
+| module_name = {{PAGENAME}}
+}}
+}}
+"""
+
+modify_text(sample)
