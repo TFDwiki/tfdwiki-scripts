@@ -86,43 +86,24 @@ def modify_text(page_text):
         else:
             completed_text.append(line)
     
-    for line in completed_text:
-        print(line)
+    #for line in completed_text:
+    #    print(line)
+    multiline_version = "\n".join(completed_text)
+    return multiline_version
 
-sample = """{{PreReleaseData}}
-{{Template:ModuleDefinitions|
-{{Template:ModuleUnique
- | name = {{PAGENAME}}
- | variantID = 1
- | pic = 
- | version_released = {{Launch}}
- | rarity = Rare
- | socket = Rutile
- | class = Descendant
- | max_enhancement_level = 
- | capacity_cost_0 = 5
- | exclusive_descendant = 
- | exclusive_category = Time
- | exclusive_weapon_type = 
- | effect_0 = Skill Duration +5%, HP Heal +7.4%.
- | effect_1 = 
- | effect_2 = 
- | effect_3 = 
- | effect_4 = 
- | effect_5 = 
- | effect_6 = 
- | effect_7 = 
- | effect_8 = 
- | effect_9 = 
- | effect_10 = 
-}}
-}}
-{{Template:ModuleDetailsDefinitions
-|{{Template:ModuleUniqueDetails
-| variantID = 1
-| module_name = {{PAGENAME}}
-}}
-}}
-"""
+def update_page(page):
+    print("Updating " + page.title())
+    try:
+        page.text = modify_text(page.text)
+        page.save(summary='BOT EDIT: Bulk replacement of exclusive_descendant to exclusive_base_descendant for modules')
+    except Exception as e:
+            print(f"An error occurred with page {page.title()}: {e}")
 
-modify_text(sample)
+# Single test edit
+# update_page(pywikibot.Page(site, "TestModule"))
+
+def bulk_edit():
+    for page in needs_modifications_list:
+        update_page(page)
+
+# Pending CR, call: bulk_edit()
