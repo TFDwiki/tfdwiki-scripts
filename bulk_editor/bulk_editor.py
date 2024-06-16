@@ -72,17 +72,23 @@ def search_for_pages_to_edit():
 def modify_text(page_text):
     completed_text = []
     lines = page_text.split('\n')
+    ultimate = "false"
+    replaced = False # Some pages could have more than one instance of " | exclusive_descendant = ..."
     for line in lines:
         if "exclusive_descendant =" in line:
+            if replaced: continue
             after_equals = line.split("exclusive_descendant =", 1)[1]
-            after_equals = after_equals.replace("Ultimate ", "") # Make sure we're not using the Ultimate versions of any Descendant
+            if "Ultimate " in after_equals:
+                ultimate = "true"
+                after_equals = after_equals.replace("Ultimate ", "") # Make sure we're not using the Ultimate versions of any Descendant
             replacement_line1 = " | exclusive_base_descendant =" + after_equals
             if after_equals == "" or after_equals == " ":
                 replacement_line2 = " | exclusive_to_ultimate_version = "
             else:
-                replacement_line2 = " | exclusive_to_ultimate_version = false" # This will require manual editing after the bulk change is done.
+                replacement_line2 = f" | exclusive_to_ultimate_version = {ultimate}"
             completed_text.append(replacement_line1)
             completed_text.append(replacement_line2)
+            replaced = True
         else:
             completed_text.append(line)
     
