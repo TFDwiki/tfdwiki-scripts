@@ -20,7 +20,6 @@ class Family(family.Family):
 
 site = pywikibot.Site('en', Family())
 site.login('ImageBot')
-repo = site.data_repository()
 
 description = """== Licensing ==
 {{From NEXON}}
@@ -45,5 +44,20 @@ for filename in os.listdir(directory):
                       description=description,
                       use_filename=filename,
                       keep_filename=True,
-                      verify_description=False)
+                      verify_description=False,
+                      ignore_warning=False)
     bot.run()
+
+# Just a note, if you want to upload mp4 files, pywikibot doesn't seem to be pulling from the site's approved formats
+# I couldn't figure out how to specify the site.file_extensions list to include other formats
+# So my workaround was to just into the library and comment out the file type check
+# Find your venv location:
+# print(pywikibot.__file__)
+# Then modify pywikibot\page\_filepage.py
+# Comment out these lines:
+# if not sep or extension.lower() not in self.site.file_extensions:
+#    raise ValueError(
+#        f'{title!r} does not have a valid extension '
+#        f'({", ".join(self.site.file_extensions)}).'
+#    )
+# Then cry as you hack around a lack of documentation on how to do this correctly.
