@@ -1,0 +1,1 @@
+('YourMainUsernameNotBot', BotPassword('JustBotName', 'botpasswordhere'))
