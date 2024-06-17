@@ -36,21 +36,7 @@ def search_for_pages_to_edit():
             investigate_list.append(page_title)
             continue
 
-        # If the page already contains the modification, there's no need to edit it
-        finished_text = "| exclusive_to_ultimate_descendant"
-        if finished_text in page_text:
-            print("This page has already been updated, skipping.")
-            already_modified_list.append(page_title)
-            continue
-
-        # One extra safety check to make sure the page has the text we want to modify
-        to_modify_text = "| exclusive_descendant ="
-        if to_modify_text not in page_text:
-            print("This page is using the expected template, but doesn't have the expected line to replace. Investigate.")
-            investigate_list.append(page_title)
-            continue
-
-        # This is one of the pages we need to modify
+        # This is one of the pages we need to scan in-depth for changing
         needs_modifications_list.append(page)
 
 
@@ -70,32 +56,19 @@ def search_for_pages_to_edit():
         print(page)
 
 def modify_text(page_text):
-    completed_text = []
-    lines = page_text.split('\n')
-    for line in lines:
-        if "exclusive_descendant =" in line:
-            after_equals = line.split("exclusive_descendant =", 1)[1]
-            after_equals = after_equals.replace("Ultimate ", "") # Make sure we're not using the Ultimate versions of any Descendant
-            replacement_line1 = " | exclusive_base_descendant =" + after_equals
-            if after_equals == "" or after_equals == " ":
-                replacement_line2 = " | exclusive_to_ultimate_version = "
-            else:
-                replacement_line2 = " | exclusive_to_ultimate_version = false" # This will require manual editing after the bulk change is done.
-            completed_text.append(replacement_line1)
-            completed_text.append(replacement_line2)
-        else:
-            completed_text.append(line)
-    
-    #for line in completed_text:
-    #    print(line)
-    multiline_version = "\n".join(completed_text)
-    return multiline_version
+    # Replace all instances of Transcendant with Transcendent, regardless of capitalization
+    return page_text.replace("ranscendant", "ranscendent")
 
 def update_page(page):
+    modified_text = modify_text(page.text)
+    if modified_text == page.text:
+        print("No changes made to " + page.title())
+        return
+
     print("Updating " + page.title())
     try:
-        page.text = modify_text(page.text)
-        page.save(summary='BOT EDIT: Bulk replacement of exclusive_descendant to exclusive_base_descendant for modules')
+        page.text = modified_text
+        page.save(summary='BOT EDIT: Bulk fix of spelling mistake')
     except Exception as e:
             print(f"An error occurred with page {page.title()}: {e}")
 
