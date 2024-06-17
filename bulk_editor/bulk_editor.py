@@ -92,9 +92,14 @@ def modify_text(page_text):
     return multiline_version
 
 def update_page(page):
+    modified_text = modify_text(page.text)
+    if modified_text == page.text:
+        print("No changes made to " + page.title())
+        return
+
     print("Updating " + page.title())
     try:
-        page.text = modify_text(page.text)
+        page.text = modified_text
         page.save(summary='BOT EDIT: Bulk replacement of exclusive_descendant to exclusive_base_descendant for modules')
     except Exception as e:
             print(f"An error occurred with page {page.title()}: {e}")
