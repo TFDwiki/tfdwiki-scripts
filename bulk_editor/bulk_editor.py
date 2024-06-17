@@ -99,11 +99,13 @@ def update_page(page):
     except Exception as e:
             print(f"An error occurred with page {page.title()}: {e}")
 
-# Single test edit
-# update_page(pywikibot.Page(site, "TestModule"))
-
 def bulk_edit():
+    search_for_pages_to_edit()
     for page in needs_modifications_list:
         update_page(page)
 
-# Pending CR, call: bulk_edit()
+# Single test edit
+# update_page(pywikibot.Page(site, "TestModule"))
+
+# Perform all edits (Make sure this is tested with single test pages first!)
+# bulk_edit()
