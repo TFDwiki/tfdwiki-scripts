@@ -43,13 +43,6 @@ def search_for_pages_to_edit():
             already_modified_list.append(page_title)
             continue
 
-        # One extra safety check to make sure the page has the text we want to modify
-        to_modify_text = "| exclusive_descendant ="
-        if to_modify_text not in page_text:
-            print("This page is using the expected template, but doesn't have the expected line to replace. Investigate.")
-            investigate_list.append(page_title)
-            continue
-
         # This is one of the pages we need to modify
         needs_modifications_list.append(page)
 
@@ -72,22 +65,23 @@ def search_for_pages_to_edit():
 def modify_text(page_text):
     completed_text = []
     lines = page_text.split('\n')
+    last_line = ""
+    line_above = "capacity_cost_0"
     for line in lines:
-        if "exclusive_descendant =" in line:
-            after_equals = line.split("exclusive_descendant =", 1)[1]
-            after_equals = after_equals.replace("Ultimate ", "") # Make sure we're not using the Ultimate versions of any Descendant
-            replacement_line1 = " | exclusive_base_descendant =" + after_equals
-            if after_equals == "" or after_equals == " ":
-                replacement_line2 = " | exclusive_to_ultimate_version = "
-            else:
-                replacement_line2 = " | exclusive_to_ultimate_version = false" # This will require manual editing after the bulk change is done.
-            completed_text.append(replacement_line1)
-            completed_text.append(replacement_line2)
-        else:
+        # Go through lines until you hit a capacity line, then insert if needed
+        if line_above not in last_line:
+            last_line = line
             completed_text.append(line)
+            continue
+        
+        # Only insert the descendant lines if they're not already here
+        if "exclusive_base_descendant" not in line:
+            completed_text.append(" | exclusive_base_descendant = ")
+            completed_text.append(" | exclusive_to_ultimate_version = ")
+
+        last_line = line
+        completed_text.append(line)
     
-    #for line in completed_text:
-    #    print(line)
     multiline_version = "\n".join(completed_text)
     return multiline_version
 
@@ -95,7 +89,7 @@ def update_page(page):
     print("Updating " + page.title())
     try:
         page.text = modify_text(page.text)
-        page.save(summary='BOT EDIT: Bulk replacement of exclusive_descendant to exclusive_base_descendant for modules')
+        page.save(summary='BOT EDIT: Bulk inserting exclusive_base_descendant into module pages missing this template property.')
     except Exception as e:
             print(f"An error occurred with page {page.title()}: {e}")
 
@@ -105,7 +99,7 @@ def bulk_edit():
         update_page(page)
 
 # Single test edit
-# update_page(pywikibot.Page(site, "TestModule"))
+#update_page(pywikibot.Page(site, "TestModuleMulti"))
 
 # Perform all edits (Make sure this is tested with single test pages first!)
 # bulk_edit()
